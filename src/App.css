@@ -16,3 +16,15 @@
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 1;
 }
+
+.home {
+  display: grid;
+  min-height: 100vh;
+  grid-template-rows: auto 1fr auto;
+}
+
+.bg-form {
+  background-image: url("./assets/Header.jpg");
+  background-size: cover;
+  background-position: center;
+}

@@ -1,7 +1,7 @@
 import CardPizza from "../components/CardPizza";
 import Header from "../components/Header";
 
-const Home = () => {
+const HomePage = () => {
   return (
     <>
       <Header />
@@ -48,4 +48,4 @@ ac54-90f6c31eb3e3"
   );
 };
 
-export default Home;
+export default HomePage;
