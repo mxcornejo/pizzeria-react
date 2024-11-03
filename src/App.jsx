@@ -1,4 +1,5 @@
 import "./App.css";
+import Cart from "./components/Cart";
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
 import HomePage from "./views/HomePage";
@@ -10,10 +11,11 @@ function App() {
     <div className="home">
       <Navbar />
       {/* <HomePage /> */}
-      <div className="bg-form">
+      {/* <div className="bg-form">
         <RegisterPage />
-        {/* <LoginPage /> */}
-      </div>
+        <LoginPage />
+      </div> */}
+      <Cart />
       <Footer />
     </div>
   );
