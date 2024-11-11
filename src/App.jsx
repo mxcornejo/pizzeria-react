@@ -4,6 +4,7 @@ import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
 import HomePage from "./views/HomePage";
 import LoginPage from "./views/LoginPage";
+import PizzaPage from "./views/PizzaPage";
 import RegisterPage from "./views/RegisterPage";
 
 function App() {
@@ -11,11 +12,12 @@ function App() {
     <div className="home">
       <Navbar />
       {/* <HomePage /> */}
+      <PizzaPage />
       {/* <div className="bg-form">
         <RegisterPage />
         <LoginPage />
       </div> */}
-      <Cart />
+      {/* <Cart /> */}
       <Footer />
     </div>
   );
