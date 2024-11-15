@@ -1,8 +1,17 @@
+import { useEffect, useState } from "react";
 import CardPizza from "../components/CardPizza";
 import Header from "../components/Header";
-import { pizzas } from "../data/pizzas";
 
 const HomePage = () => {
+  const [pizzas, setPizzas] = useState([]);
+
+  useEffect(() => {
+    fetch("http://localhost:5000/api/pizzas")
+      .then((response) => response.json())
+      .then((data) => setPizzas(data))
+      .catch((error) => console.error("Error fetching pizzas:", error));
+  }, []);
+
   const pizzaList = pizzas.map((pizza) => (
     <div className="col-md-4" key={pizza.id}>
       <CardPizza
