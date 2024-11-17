@@ -1,14 +1,16 @@
+import { Link } from "react-router-dom";
 import { formatNumber } from "../utils/formatNumber";
 
 const Navbar = () => {
   const total = 25000;
   const token = false;
+
   return (
     <nav className="navbar bg-dark navbar-expand-lg">
       <div className="container-fluid">
-        <a className="navbar-brand text-white" href="#">
+        <Link className="navbar-brand text-white" to="/">
           Pizzeria Mamma Mia!
-        </a>
+        </Link>
         <button
           className="navbar-toggler bg-white"
           type="button"
@@ -23,30 +25,21 @@ const Navbar = () => {
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav gap-3">
             <li className="nav-item">
-              <button
-                className="btn btn-outline-light"
-                aria-current="page"
-                href="#"
-              >
+              <Link className="btn btn-outline-light" to="/">
                 🍕 Home
-              </button>
+              </Link>
             </li>
             {token ? (
               <>
                 <li className="nav-item">
-                  <button
-                    className="btn btn-outline-light"
-                    aria-current="page"
-                    href="#"
-                  >
+                  <Link className="btn btn-outline-light" to="/profile">
                     🔓 Profile
-                  </button>
+                  </Link>
                 </li>
                 <li className="nav-item">
                   <button
                     className="btn btn-outline-light"
-                    aria-current="page"
-                    href="#"
+                    onClick={() => alert("Logout functionality goes here")}
                   >
                     🔒 Logout
                   </button>
@@ -55,31 +48,23 @@ const Navbar = () => {
             ) : (
               <>
                 <li className="nav-item">
-                  <button
-                    className="btn btn-outline-light"
-                    aria-current="page"
-                    href="#"
-                  >
+                  <Link className="btn btn-outline-light" to="/login">
                     🔐 Login
-                  </button>
+                  </Link>
                 </li>
                 <li className="nav-item">
-                  <button
-                    className="btn btn-outline-light"
-                    aria-current="page"
-                    href="#"
-                  >
+                  <Link className="btn btn-outline-light" to="/register">
                     🔐 Register
-                  </button>
+                  </Link>
                 </li>
               </>
             )}
           </ul>
           <ul className="navbar-nav ms-auto">
             <li className="nav-item">
-              <a className="btn btn-outline-info" aria-current="page" href="#">
+              <Link className="btn btn-outline-info" to="/cart">
                 🛒 Total: $ {formatNumber(total)}
-              </a>
+              </Link>
             </li>
           </ul>
         </div>

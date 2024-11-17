@@ -2,7 +2,7 @@ import { useState } from "react";
 import { pizzaCart } from "../data/pizzas";
 import { formatNumber } from "../utils/formatNumber";
 
-const Cart = () => {
+const CartPage = () => {
   const [cartItems, setCartItems] = useState(
     pizzaCart.map((pizza) => ({
       ...pizza,
@@ -89,4 +89,4 @@ const Cart = () => {
   );
 };
 
-export default Cart;
+export default CartPage;
