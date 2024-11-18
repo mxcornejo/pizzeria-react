@@ -1,4 +1,27 @@
+import Swal from "sweetalert2";
+
 function ProfilePage() {
+  const handleLogout = () => {
+    Swal.fire({
+      title: "¿Estás seguro?",
+      text: "Se cerrará tu sesión actual.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sí, cerrar sesión",
+      cancelButtonText: "Cancelar",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire(
+          "Sesión cerrada",
+          "Has cerrado tu sesión exitosamente.",
+          "success"
+        );
+      }
+    });
+  };
+
   return (
     <div className="container mt-5">
       <div className="row justify-content-center">
@@ -11,10 +34,7 @@ function ProfilePage() {
               <p className="lead">
                 Email: <strong>usuario@example.com</strong>
               </p>
-              <button
-                className="btn btn-dark mt-3"
-                onClick={() => alert("Cerrar sesión")}
-              >
+              <button className="btn btn-dark mt-3" onClick={handleLogout}>
                 Cerrar sesión
               </button>
             </div>

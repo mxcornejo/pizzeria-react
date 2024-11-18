@@ -1,9 +1,31 @@
 import { Link } from "react-router-dom";
+import Swal from "sweetalert2";
 import { formatNumber } from "../utils/formatNumber";
 
 const Navbar = () => {
   const total = 25000;
   const token = false;
+
+  const handleLogout = () => {
+    Swal.fire({
+      title: "¿Estás seguro?",
+      text: "Se cerrará tu sesión actual.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sí, cerrar sesión",
+      cancelButtonText: "Cancelar",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire(
+          "Sesión cerrada",
+          "Has cerrado tu sesión exitosamente.",
+          "success"
+        );
+      }
+    });
+  };
 
   return (
     <nav className="navbar bg-dark navbar-expand-lg">
@@ -33,15 +55,15 @@ const Navbar = () => {
               <>
                 <li className="nav-item">
                   <Link className="btn btn-outline-light" to="/profile">
-                    🔓 Profile
+                    🔓 Perfil
                   </Link>
                 </li>
                 <li className="nav-item">
                   <button
                     className="btn btn-outline-light"
-                    onClick={() => alert("Logout functionality goes here")}
+                    onClick={handleLogout}
                   >
-                    🔒 Logout
+                    🔒 Cerrar sesión
                   </button>
                 </li>
               </>
@@ -49,12 +71,12 @@ const Navbar = () => {
               <>
                 <li className="nav-item">
                   <Link className="btn btn-outline-light" to="/login">
-                    🔐 Login
+                    🔐 Inicio de sesión
                   </Link>
                 </li>
                 <li className="nav-item">
                   <Link className="btn btn-outline-light" to="/register">
-                    🔐 Register
+                    🔐 Registro
                   </Link>
                 </li>
               </>
