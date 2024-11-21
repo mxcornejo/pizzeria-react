@@ -10,7 +10,7 @@ export const PizzaProvider = ({ children }) => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch("http://localhost:5001/api/pizzas")
+    fetch("http://localhost:5000/api/pizzas")
       .then((response) => response.json())
       .then((data) => {
         setPizzas(data);
