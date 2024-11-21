@@ -1,34 +1,8 @@
-import { useState } from "react";
-import { pizzaCart } from "../data/pizzas";
+import { useCart } from "../context/CartContext";
 import { formatNumber } from "../utils/formatNumber";
 
 const CartPage = () => {
-  const [cartItems, setCartItems] = useState(
-    pizzaCart.map((pizza) => ({
-      ...pizza,
-      quantity: 1,
-    }))
-  );
-
-  const updateQuantity = (index, change) => {
-    setCartItems((prevItems) => {
-      const newItems = [...prevItems];
-      const newQuantity = newItems[index].quantity + change;
-
-      if (newQuantity <= 0) {
-        return newItems.filter((_, i) => i !== index);
-      } else {
-        newItems[index] = { ...newItems[index], quantity: newQuantity };
-        return newItems;
-      }
-    });
-  };
-
-  const calculateTotal = () => {
-    return cartItems.reduce((total, pizza) => {
-      return total + pizza.price * pizza.quantity;
-    }, 0);
-  };
+  const { cart, updateQuantity, calculateTotal, removeFromCart } = useCart();
 
   return (
     <div>
@@ -37,53 +11,72 @@ const CartPage = () => {
           <div className="col-md-12">
             <h2 className="my-5">Detalles del pedido:</h2>
 
-            {cartItems.map((pizza, index) => (
-              <>
-                <div className="row mb-3" key={pizza.id}>
-                  <div className="col">
-                    <img
-                      src={pizza.img}
-                      className=" rounded-1 w-25"
-                      alt={pizza.name}
-                    />
-                    <span className="ms-4">{pizza.name}</span>
-                  </div>
-                  <div className="col align-content-center text-end">
-                    <div className="d-inline-flex gap-3">
-                      <span className="mt-2 h5 text-black">
-                        $ {formatNumber(pizza.price)}
-                      </span>
-                      <button
-                        className="btn btn-outline-danger"
-                        onClick={() => updateQuantity(index, -1)}
-                      >
-                        -
-                      </button>
-                      <span className="mt-2">{pizza.quantity}</span>
-                      <button
-                        className="btn btn-outline-primary"
-                        onClick={() => updateQuantity(index, 1)}
-                      >
-                        +
-                      </button>
+            {cart.length === 0 ? (
+              // Mensaje cuando el carrito está vacío
+              <div className="text-center my-5">
+                <h4>No hay pizzas, ¿qué esperas para comerte una? 🍕</h4>
+                <a href="/" className="btn btn-dark mt-3">
+                  Ir a comprar
+                </a>
+              </div>
+            ) : (
+              // Contenido del carrito
+              cart.map((pizza) => (
+                <div key={pizza.id}>
+                  <div className="row mb-3 align-items-center">
+                    <div className="col d-flex align-items-center">
+                      <img
+                        src={pizza.img}
+                        className="rounded-1 w-25"
+                        alt={pizza.name}
+                      />
+                      <span className="ms-4">{pizza.name}</span>
+                    </div>
+                    <div className="col text-end">
+                      <div className="d-inline-flex gap-3 align-items-center">
+                        <span className="mt-2 h5 text-black">
+                          $ {formatNumber(pizza.price)}
+                        </span>
+                        <button
+                          className="btn btn-outline-dark"
+                          onClick={() => updateQuantity(pizza.id, -1)}
+                        >
+                          -
+                        </button>
+                        <span className="mt-2">{pizza.quantity}</span>
+                        <button
+                          className="btn btn-dark"
+                          onClick={() => updateQuantity(pizza.id, 1)}
+                        >
+                          +
+                        </button>
+                        <button
+                          className="btn btn-outline-dark"
+                          onClick={() => removeFromCart(pizza.id)}
+                        >
+                          🗑 Eliminar
+                        </button>
+                      </div>
                     </div>
                   </div>
+                  <hr />
                 </div>
-                <hr />
-              </>
-            ))}
+              ))
+            )}
           </div>
         </div>
-        <div className="row">
-          <div className="col-md-12">
-            <span className="mt-5 h2">
-              Total: ${formatNumber(calculateTotal())}
-            </span>
+        {cart.length > 0 && (
+          <div className="row">
+            <div className="col-md-12">
+              <span className="mt-5 h2">
+                Total: ${formatNumber(calculateTotal())}
+              </span>
+            </div>
+            <div className="col-md-12">
+              <button className="btn btn-dark mt-3">Pagar</button>
+            </div>
           </div>
-          <div className="col-md-12">
-            <button className="btn btn-dark mt-3">Pagar</button>
-          </div>
-        </div>
+        )}
       </div>
     </div>
   );

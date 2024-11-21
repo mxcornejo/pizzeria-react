@@ -1,9 +1,11 @@
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import { formatNumber } from "../utils/formatNumber";
+import { useCart } from "../context/CartContext";
 
 const Navbar = () => {
-  const total = 25000;
+  const { calculateTotal } = useCart();
+  const total = calculateTotal();
   const token = false;
 
   const handleLogout = () => {

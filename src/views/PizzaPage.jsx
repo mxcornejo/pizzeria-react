@@ -1,18 +1,21 @@
-import { useEffect, useState } from "react";
+import { usePizza } from "../context/PizzaContext";
 import { formatNumber } from "../utils/formatNumber";
 
-const PizzaPage = () => {
-  const [pizza, setPizza] = useState(null);
+const PizzaPage = ({ pizzaId }) => {
+  const { pizzas, loading, error } = usePizza();
 
-  useEffect(() => {
-    fetch("http://localhost:5000/api/pizzas/p001")
-      .then((response) => response.json())
-      .then((data) => setPizza(data))
-      .catch((error) => console.error("Error al buscar pizza:", error));
-  }, []);
+  if (loading) {
+    return <p>Cargando pizza...</p>;
+  }
+
+  if (error) {
+    return <p>Error al cargar la pizza: {error.message}</p>;
+  }
+
+  const pizza = pizzas.find((p) => p.id === pizzaId);
 
   if (!pizza) {
-    return <p>Cargando...</p>;
+    return <p>Pizza no encontrada</p>;
   }
 
   return (
