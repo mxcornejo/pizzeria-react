@@ -1,20 +1,22 @@
-import { useEffect, useState } from "react";
+import { usePizza } from "../context/PizzaContext";
 import CardPizza from "../components/CardPizza";
 import Header from "../components/Header";
 
 const HomePage = () => {
-  const [pizzas, setPizzas] = useState([]);
+  const { pizzas, loading, error } = usePizza();
 
-  useEffect(() => {
-    fetch("http://localhost:5000/api/pizzas")
-      .then((response) => response.json())
-      .then((data) => setPizzas(data))
-      .catch((error) => console.error("Error fetching pizzas:", error));
-  }, []);
+  if (loading) {
+    return <p>Cargando pizzas...</p>;
+  }
+
+  if (error) {
+    return <p>Error al cargar las pizzas: {error.message}</p>;
+  }
 
   const pizzaList = pizzas.map((pizza) => (
     <div className="col-md-4" key={pizza.id}>
       <CardPizza
+        id={pizza.id}
         name={pizza.name}
         price={pizza.price}
         ingredients={pizza.ingredients}

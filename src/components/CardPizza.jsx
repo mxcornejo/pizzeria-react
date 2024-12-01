@@ -1,6 +1,8 @@
+import { useCart } from "../context/CartContext";
 import { formatNumber } from "../utils/formatNumber";
 
-const CardPizza = ({ name, ingredients, price, img }) => {
+const CardPizza = ({ id, name, ingredients, price, img }) => {
+  const { addToCart } = useCart();
   return (
     <div className="card mb-3">
       <img src={img} className="card-img-top" alt={name}></img>
@@ -23,9 +25,12 @@ const CardPizza = ({ name, ingredients, price, img }) => {
           <a href="#" className="btn btn-outline-dark">
             Ver más 👀
           </a>
-          <a href="#" className="btn btn-dark">
+          <button
+            className="btn btn-dark"
+            onClick={() => addToCart({ id, name, price, img })}
+          >
             Añadir 🛒
-          </a>
+          </button>
         </div>
       </div>
     </div>
