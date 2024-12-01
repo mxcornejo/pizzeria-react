@@ -8,29 +8,55 @@ import PizzaPage from "./views/PizzaPage";
 import RegisterPage from "./views/RegisterPage";
 import NotFoundPage from "./views/NotFoundPage";
 import CartPage from "./views/CartPage";
-import ProfilePage from "./views/ ProfilePage";
+import ProfilePage from "./views/ProfilePage";
 import { CartProvider } from "./context/CartContext";
 import { PizzaProvider } from "./context/PizzaContext";
+import { UserProvider } from "./context/UserContext";
+import { AuthRoute } from "./components/AuthRoute";
+import { ProtectedRoute } from "./components/ProtectedRoute";
 
 function App() {
   return (
     <div className="home">
       <Router>
-        <CartProvider>
-          <PizzaProvider>
-            <Navbar />
-            <Routes>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/register" element={<RegisterPage />} />
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/cart" element={<CartPage />} />
-              <Route path="/pizza/p001" element={<PizzaPage />} />
-              <Route path="/profile" element={<ProfilePage />} />
-              <Route path="*" element={<NotFoundPage />} />
-            </Routes>
-            <Footer />
-          </PizzaProvider>
-        </CartProvider>
+        <UserProvider>
+          <CartProvider>
+            <PizzaProvider>
+              <Navbar />
+              <Routes>
+                <Route path="/" element={<HomePage />} />
+                <Route
+                  path="/register"
+                  element={
+                    <AuthRoute>
+                      <RegisterPage />
+                    </AuthRoute>
+                  }
+                />
+                <Route
+                  path="/login"
+                  element={
+                    <AuthRoute>
+                      <LoginPage />
+                    </AuthRoute>
+                  }
+                />
+                <Route path="/cart" element={<CartPage />} />
+                <Route path="/pizza/:pizzaId" element={<PizzaPage />} />
+                <Route
+                  path="/profile"
+                  element={
+                    <ProtectedRoute>
+                      <ProfilePage />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route path="*" element={<NotFoundPage />} />
+              </Routes>
+              <Footer />
+            </PizzaProvider>
+          </CartProvider>
+        </UserProvider>
       </Router>
     </div>
   );

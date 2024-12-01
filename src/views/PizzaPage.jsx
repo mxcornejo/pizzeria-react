@@ -1,8 +1,12 @@
 import { usePizza } from "../context/PizzaContext";
+import { useParams } from "react-router-dom";
 import { formatNumber } from "../utils/formatNumber";
+import { useCart } from "../context/CartContext";
 
-const PizzaPage = ({ pizzaId }) => {
+const PizzaPage = () => {
+  const { addToCart } = useCart();
   const { pizzas, loading, error } = usePizza();
+  const { pizzaId } = useParams();
 
   if (loading) {
     return <p>Cargando pizza...</p>;
@@ -38,9 +42,19 @@ const PizzaPage = ({ pizzaId }) => {
               </li>
             ))}
           </ul>
-          <a href="#" className="btn btn-dark">
+          <button
+            className="btn btn-dark"
+            onClick={() =>
+              addToCart({
+                id: pizza.id,
+                name: pizza.name,
+                price: pizza.price,
+                img: pizza.img,
+              })
+            }
+          >
             Añadir 🛒
-          </a>
+          </button>
         </div>
       </div>
     </div>

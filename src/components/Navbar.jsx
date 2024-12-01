@@ -2,11 +2,12 @@ import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import { formatNumber } from "../utils/formatNumber";
 import { useCart } from "../context/CartContext";
+import { useUser } from "../context/UserContext";
 
 const Navbar = () => {
   const { calculateTotal } = useCart();
   const total = calculateTotal();
-  const token = false;
+  const { token, logout } = useUser();
 
   const handleLogout = () => {
     Swal.fire({
@@ -20,6 +21,7 @@ const Navbar = () => {
       cancelButtonText: "Cancelar",
     }).then((result) => {
       if (result.isConfirmed) {
+        logout();
         Swal.fire(
           "Sesión cerrada",
           "Has cerrado tu sesión exitosamente.",

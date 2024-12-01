@@ -1,8 +1,10 @@
 import { useCart } from "../context/CartContext";
+import { useUser } from "../context/UserContext";
 import { formatNumber } from "../utils/formatNumber";
 
 const CartPage = () => {
   const { cart, updateQuantity, calculateTotal, removeFromCart } = useCart();
+  const { token } = useUser();
 
   return (
     <div>
@@ -73,7 +75,9 @@ const CartPage = () => {
               </span>
             </div>
             <div className="col-md-12">
-              <button className="btn btn-dark mt-3">Pagar</button>
+              <button className="btn btn-dark mt-3" disabled={!token}>
+                {token ? "Pagar" : "Inicia sesión para pagar"}
+              </button>
             </div>
           </div>
         )}

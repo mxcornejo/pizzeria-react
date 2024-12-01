@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import { formatNumber } from "../utils/formatNumber";
 
@@ -22,9 +23,9 @@ const CardPizza = ({ id, name, ingredients, price, img }) => {
         <hr />
         <h4 className="text-center pb-2">Precio: ${formatNumber(price)}</h4>
         <div className="d-flex justify-content-around pb-4">
-          <a href="#" className="btn btn-outline-dark">
+          <Link to={`/pizza/${id}`} className="btn btn-outline-dark">
             Ver más 👀
-          </a>
+          </Link>
           <button
             className="btn btn-dark"
             onClick={() => addToCart({ id, name, price, img })}

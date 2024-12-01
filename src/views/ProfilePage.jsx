@@ -1,6 +1,11 @@
+import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import { useUser } from "../context/UserContext";
 
 function ProfilePage() {
+  const { logout } = useUser();
+  const navigate = useNavigate();
+
   const handleLogout = () => {
     Swal.fire({
       title: "¿Estás seguro?",
@@ -13,11 +18,14 @@ function ProfilePage() {
       cancelButtonText: "Cancelar",
     }).then((result) => {
       if (result.isConfirmed) {
+        logout();
         Swal.fire(
           "Sesión cerrada",
           "Has cerrado tu sesión exitosamente.",
           "success"
-        );
+        ).then(() => {
+          navigate("/login");
+        });
       }
     });
   };
