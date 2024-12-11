@@ -1,10 +1,81 @@
 import { useCart } from "../context/CartContext";
 import { useUser } from "../context/UserContext";
 import { formatNumber } from "../utils/formatNumber";
+import { useState } from "react";
+import Swal from "sweetalert2";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+
+const API_BASE_URL = "http://localhost:5000";
 
 const CartPage = () => {
   const { cart, updateQuantity, calculateTotal, removeFromCart } = useCart();
   const { token } = useUser();
+  const [isSuccess, setIsSuccess] = useState(false);
+  const navigate = useNavigate();
+
+  const handleCheckout = async () => {
+    if (!token) {
+      Swal.fire(
+        "¡Necesitas iniciar sesión!",
+        "Inicia sesión para realizar la compra.",
+        "warning"
+      );
+      return;
+    }
+
+    try {
+      // Envio de carrito al backend
+      const checkoutData = {
+        items: cart.map((pizza) => ({
+          id: pizza.id,
+          name: pizza.name,
+          quantity: pizza.quantity,
+          price: pizza.price,
+        })),
+        total: calculateTotal(),
+      };
+
+      const response = await axios.post(
+        `${API_BASE_URL}/api/checkouts`,
+        checkoutData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        setIsSuccess(true);
+        Swal.fire(
+          "Compra realizada",
+          "Compra exitosa. ¡Gracias por tu compra!",
+          "success"
+        );
+      } else {
+        Swal.fire(
+          "Error",
+          "Hubo un problema al procesar tu compra. Intenta nuevamente.",
+          "error"
+        );
+      }
+    } catch (error) {
+      Swal.fire(
+        "Error",
+        "Hubo un problema de conexión. Intenta nuevamente.",
+        "error"
+      );
+    }
+  };
+
+  const handleGoToShop = () => {
+    if (cart.length === 0) {
+      // Redirigir usando navigate cuando el carrito está vacío
+      navigate("/");
+    }
+  };
 
   return (
     <div>
@@ -17,9 +88,9 @@ const CartPage = () => {
               // Mensaje cuando el carrito está vacío
               <div className="text-center my-5">
                 <h4>No hay pizzas, ¿qué esperas para comerte una? 🍕</h4>
-                <a href="/" className="btn btn-dark mt-3">
+                <button className="btn btn-dark mt-3" onClick={handleGoToShop}>
                   Ir a comprar
-                </a>
+                </button>
               </div>
             ) : (
               // Contenido del carrito
@@ -75,8 +146,12 @@ const CartPage = () => {
               </span>
             </div>
             <div className="col-md-12">
-              <button className="btn btn-dark mt-3" disabled={!token}>
-                {token ? "Pagar" : "Inicia sesión para pagar"}
+              <button
+                className="btn btn-dark mt-3"
+                onClick={handleCheckout}
+                disabled={isSuccess}
+              >
+                {isSuccess ? "Compra realizada" : "Pagar"}
               </button>
             </div>
           </div>

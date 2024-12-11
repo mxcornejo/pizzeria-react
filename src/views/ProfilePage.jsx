@@ -3,7 +3,7 @@ import Swal from "sweetalert2";
 import { useUser } from "../context/UserContext";
 
 function ProfilePage() {
-  const { logout } = useUser();
+  const { email, logout } = useUser();
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -40,7 +40,7 @@ function ProfilePage() {
             </div>
             <div className="card-body text-center">
               <p className="lead">
-                Email: <strong>usuario@example.com</strong>
+                Email: <strong>{email}</strong>
               </p>
               <button className="btn btn-dark mt-3" onClick={handleLogout}>
                 Cerrar sesión

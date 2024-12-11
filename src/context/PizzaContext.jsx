@@ -7,7 +7,7 @@ export const usePizza = () => {
 };
 
 export const PizzaProvider = ({ children }) => {
-  const endPoint = "http://localhost:5001/api/pizzas";
+  const endPoint = "http://localhost:5000/api/pizzas";
   const [pizzas, setPizzas] = useState([]);
   const [pizzaDetail, setPizzaDetail] = useState(null);
   const [loading, setLoading] = useState(true);

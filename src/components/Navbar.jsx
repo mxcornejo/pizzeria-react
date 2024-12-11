@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { formatNumber } from "../utils/formatNumber";
 import { useCart } from "../context/CartContext";
@@ -8,6 +8,7 @@ const Navbar = () => {
   const { calculateTotal } = useCart();
   const total = calculateTotal();
   const { token, logout } = useUser();
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     Swal.fire({
@@ -26,7 +27,9 @@ const Navbar = () => {
           "Sesión cerrada",
           "Has cerrado tu sesión exitosamente.",
           "success"
-        );
+        ).then(() => {
+          navigate("/login");
+        });
       }
     });
   };

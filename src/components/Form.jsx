@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Swal from "sweetalert2";
+import { useUser } from "../context/UserContext";
 
 const Form = ({ registeredUser }) => {
   const [formData, setFormData] = useState({
@@ -7,13 +8,14 @@ const Form = ({ registeredUser }) => {
     password: "",
     confirmPassword: "",
   });
+  const { login, register } = useUser();
 
   const handleChange = (e) => {
     const { id, value } = e.target;
     setFormData({ ...formData, [id]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // campos vacíos
@@ -50,12 +52,31 @@ const Form = ({ registeredUser }) => {
       return;
     }
 
-    // todo correcto
-    Swal.fire({
-      icon: "success",
-      title: "Éxito",
-      text: registeredUser ? "Inicio de sesión exitoso" : "Registro exitoso",
-    });
+    try {
+      if (registeredUser) {
+        // Llamada al login
+        await login({ email: formData.email, password: formData.password });
+        Swal.fire({
+          icon: "success",
+          title: "Éxito",
+          text: "Inicio de sesión exitoso",
+        });
+      } else {
+        // Llamada al registro
+        await register({ email: formData.email, password: formData.password });
+        Swal.fire({
+          icon: "success",
+          title: "Éxito",
+          text: "Registro exitoso",
+        });
+      }
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Hubo un problema con el proceso. Inténtalo de nuevo.",
+      });
+    }
   };
 
   return (
